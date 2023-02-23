@@ -39,7 +39,16 @@ const TodoList = () => {
     e: React.ChangeEvent<HTMLInputElement>,
     id: string
   ) => {
-    axios.patch(
+    setTasks((prev) =>
+      prev.map((task) => {
+        if (task.id === id) {
+          return { ...task, isCompleted: e.target.checked };
+        }
+        return task;
+      })
+    );
+      
+    await axios.patch(
       "https://todo.crudful.com/tasks/" + id,
       {
         isCompleted: e.target.checked,
@@ -97,7 +106,7 @@ const TodoList = () => {
         >
           <Box>
             <Checkbox
-              defaultChecked={task.isCompleted}
+              checked={task.isCompleted}
               onChange={(e) => {
                 handleFinishTask(e, task.id);
               }}

@@ -3,25 +3,34 @@ import axios from "axios";
 import { useState } from "react";
 import { config } from "../config";
 
-
-interface updateTaskState {
-  updateTaskState: (newTaskTitle: string, newTaskIsCompleted: boolean, id:string) => void;
+interface props {
+  updateTasksFromSubComponent: (
+    id: string,
+    title: string,
+    isCompleted: boolean
+  ) => void;
 }
 
-const NewTodoDetails: React.FC<updateTaskState> = (props) => {
+const AddTodoFields: React.FC<props> = (props) => {
   const [newTask, setNewTask] = useState<string>("");
 
-  const addNewTaskHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-
-    axios.post(
-      "https://todo.crudful.com/tasks",
-      {
-        title: newTask,
-        isCompleted: false,
-      },
-      {
-        headers: { cfAccessKey: config.cfAccessKey },
-      }
+  const addNewTaskHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    const response = (
+      await axios.post(
+        "https://todo.crudful.com/tasks",
+        {
+          title: newTask,
+          isCompleted: false,
+        },
+        {
+          headers: { cfAccessKey: config.cfAccessKey },
+        }
+      )
+    ).data;
+    props.updateTasksFromSubComponent(
+      response.id,
+      response.title,
+      response.isCompleted
     );
   };
 
@@ -40,7 +49,6 @@ const NewTodoDetails: React.FC<updateTaskState> = (props) => {
         variant="contained"
         onClick={(e) => {
           addNewTaskHandler(e);
-          props.updateTaskState(newTask, false, "mockID");
         }}
       >
         Add
@@ -49,4 +57,4 @@ const NewTodoDetails: React.FC<updateTaskState> = (props) => {
   );
 };
 
-export default NewTodoDetails;
+export default AddTodoFields;

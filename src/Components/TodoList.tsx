@@ -40,7 +40,7 @@ const TodoList = () => {
     id: string
   ) => {
     axios.patch(
-      "/tasks/" + id,
+      "https://todo.crudful.com/tasks/" + id,
       {
         isCompleted: e.target.checked,
       },
@@ -52,7 +52,7 @@ const TodoList = () => {
 
   useEffect(() => {
     const requests = async () => {
-      const tasks = await axios.get("/tasks", {
+      const tasks = await axios.get("https://todo.crudful.com/tasks", {
         headers: { cfAccessKey: config.cfAccessKey },
       });
 
@@ -64,7 +64,7 @@ const TodoList = () => {
   }, []);
 
   const deleteHandler = async (id: string) => {
-    axios.delete("/tasks/" + id, {
+    axios.delete("https://todo.crudful.com/tasks/" + id, {
       headers: { cfAccessKey: config.cfAccessKey },
     });
   };

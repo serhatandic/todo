@@ -14,7 +14,7 @@ const NewTodoDetails: React.FC<updateTaskState> = (props) => {
   const addNewTaskHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
 
     axios.post(
-      "/tasks",
+      "https://todo.crudful.com/tasks",
       {
         title: newTask,
         isCompleted: false,
